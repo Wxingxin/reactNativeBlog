@@ -1,299 +1,356 @@
-我先把 React Native 里“输入框”分成两块讲：**TextInput（核心）** + **（可选）第三方封装/表单库**。下面这份就是你要的 **属性使用大全 + 知识点大全**，按“开发常用程度”给你整理，直接能当速查表用。
+下面我将**系统性、结构化**地给你一份 **React Native 组件大全（偏官方 + 实战视角）**，并结合你目前的技术背景（前端 / React / RN 学习中），重点说明**用途、常见属性、使用场景**，避免只给“名单”。
 
 ---
 
-# 1) TextInput 是什么？（核心知识点）
+# 一、基础视图组件（最核心，必须掌握）
 
-* RN 里没有 HTML 的 `<input />`，对应组件是 **`TextInput`**
-* 既能做：普通输入、密码、搜索框、多行文本、数字输入、验证码输入
-* 两种使用方式：
+## 1️⃣ View
 
-  * **受控（推荐）**：`value + onChangeText`
-  * **非受控**：`defaultValue` 或 `ref` 取值（少用）
+> RN 中最基础的容器组件，等价于 Web 的 `div`
 
----
+**用途**
 
-# 2) 最推荐的写法：受控输入（必会）
+- 布局
+- 包裹其他组件
+- Flex 布局的核心载体
+
+**常用属性**
+
+- `style`
+- `onLayout`
+- `pointerEvents`
 
 ```tsx
-import React, { useState } from "react";
-import { View, TextInput, Text } from "react-native";
-
-export default function Demo() {
-  const [text, setText] = useState("");
-
-  return (
-    <View style={{ padding: 16 }}>
-      <TextInput
-        value={text}
-        onChangeText={setText}
-        placeholder="请输入..."
-        style={{ borderWidth: 1, padding: 12, borderRadius: 8 }}
-      />
-      <Text style={{ marginTop: 12 }}>当前：{text}</Text>
-    </View>
-  );
-}
-```
-
-✅ 优点：状态唯一来源，验证/提交/清空都方便
-⚠️ 注意：只要你传了 `value`，就必须正确更新它，否则输入会“卡住”。
-
----
-
-# 3) 常用属性大全（按分类）
-
-## A. 值与变化（最重要）
-
-* `value: string`：受控值
-* `defaultValue: string`：非受控初始值
-* `onChangeText: (text) => void`：文本变化回调（最常用）
-* `onChange: (event) => void`：更底层的事件（少用）
-
-> 实战建议：**业务里几乎只用 `onChangeText`**。
-
----
-
-## B. 占位/提示/只读/编辑开关
-
-* `placeholder: string`：占位提示
-* `placeholderTextColor: string`
-* `editable: boolean`：是否可编辑（false 类似只读）
-* `readOnly`：RN 新版本逐步支持（兼容性看版本；一般用 `editable={false}` 更稳）
-* `selectTextOnFocus: boolean`：聚焦时全选（适合“复制/编辑”场景）
-
----
-
-## C. 键盘与输入类型（非常常用）
-
-* `keyboardType`：键盘类型
-  常见：
-
-  * `"default"`
-  * `"number-pad"` / `"numeric"`
-  * `"decimal-pad"`
-  * `"phone-pad"`
-  * `"email-address"`
-  * `"url"`
-  * `"ascii-capable"`（某些登录名）
-* `returnKeyType`：键盘右下角按钮文本/行为
-  常见：`"done" | "go" | "next" | "search" | "send"`
-* `onSubmitEditing`：按回车/搜索触发（常用）
-* `blurOnSubmit`：提交后是否自动失焦
-
-  * 单行输入一般 true（默认）
-  * 多行一般要设 false
-
----
-
-## D. 安全与敏感输入（密码必看）
-
-* `secureTextEntry: boolean`：密码模式（隐藏字符）
-* `textContentType`（iOS）：系统识别内容类型，影响自动填充
-  例如：`"username" | "password" | "emailAddress" | "oneTimeCode"`
-* `autoComplete`（Android/部分平台）：自动填充类型
-  例如：`"email" | "password" | "name" | "tel"`
-* `importantForAutofill`（Android）：控制自动填充优先级
-
-> 登录/注册体验做得好不好，很大部分靠这些属性。
-
----
-
-## E. 自动更正/大小写/智能输入（细节体验）
-
-* `autoCorrect: boolean`：自动纠错（中文一般影响不大）
-* `autoCapitalize`：自动大写
-
-  * `"none" | "sentences" | "words" | "characters"`
-* `spellCheck: boolean`：拼写检查（英语场景）
-* `keyboardAppearance`（iOS）：`"default" | "light" | "dark"`
-
----
-
-## F. 限制输入（非常实用）
-
-* `maxLength: number`：最大长度（验证码、昵称常用）
-* `inputMode`：更现代的输入模式（web 类似）部分平台支持
-* **更强限制通常靠代码实现**（比如只允许数字、去空格等）
-
-例：只允许数字
-
-```js
-onChangeText={(t) => setText(t.replace(/\D/g, ""))}
+<View style={{ flex: 1, padding: 16 }} />
 ```
 
 ---
 
-## G. 多行文本（做备注/简介）
+## 2️⃣ Text
 
-* `multiline: boolean`
-* `numberOfLines: number`（Android 更明显）
-* `textAlignVertical: "top" | "center" | "bottom"`（Android 多行垂直对齐常用）
-* `scrollEnabled: boolean`（多行内容是否可滚动）
+> 用于显示文本（⚠️ RN 中所有文字必须放在 Text 中）
 
----
+**特点**
 
-## H. 焦点控制与键盘联动（进阶常用）
+- 支持嵌套
+- 自带文本样式
 
-* `autoFocus: boolean`：进入页面自动聚焦
-* `onFocus` / `onBlur`：聚焦/失焦（做边框高亮、校验提示）
-* `ref` + `focus()` / `blur()`：代码控制焦点
-* `onKeyPress`：监听按键（Android 某些输入法不稳定，谨慎）
+**常用属性**
 
-常见“下一项”：
+- `numberOfLines`
+- `ellipsizeMode`
+- `selectable`
+- `onPress`
 
 ```tsx
-const ref2 = useRef(null);
-
-<TextInput returnKeyType="next" onSubmitEditing={() => ref2.current?.focus()} />
-<TextInput ref={ref2} returnKeyType="done" />
+<Text numberOfLines={1}>Hello React Native</Text>
 ```
 
 ---
 
-## I. 光标/选区（少量但很关键）
+## 3️⃣ Image
 
-* `selection={{ start, end }}`：控制选区
-* `onSelectionChange`：选区变化
-* `caretHidden: boolean`：隐藏光标（做验证码格子输入时可能用）
-* `contextMenuHidden: boolean`：隐藏复制粘贴菜单（某些安全场景）
+> 显示图片（本地 / 网络）
 
----
+**常用属性**
 
-## J. 样式相关（你一定会用）
-
-* `style`：输入框本身样式
-* `placeholderTextColor`
-* `selectionColor`：选区/光标颜色（做品牌色时用）
-* `underlineColorAndroid`：Android 默认下划线颜色（常设为 `"transparent"` 去掉）
-
-例：去掉 Android 下划线
+- `source`
+- `resizeMode`
+- `onLoad`
+- `onError`
 
 ```tsx
-<TextInput underlineColorAndroid="transparent" />
-```
-
----
-
-# 4) 事件大全（你在业务里会遇到）
-
-* `onFocus`：聚焦
-* `onBlur`：失焦（常用：失焦校验）
-* `onSubmitEditing`：提交
-* `onEndEditing`：结束编辑（不等同 submit）
-* `onChangeText`：文本变化（最常用）
-* `onKeyPress`：按键（谨慎）
-* `onContentSizeChange`：内容尺寸变化（多行自适应高度时用）
-
----
-
-# 5) 常见场景模板（直接复制用）
-
-## A. 邮箱输入
-
-```tsx
-<TextInput
-  value={email}
-  onChangeText={setEmail}
-  keyboardType="email-address"
-  autoCapitalize="none"
-  autoCorrect={false}
-  textContentType="emailAddress"
-  placeholder="邮箱"
-/>
-```
-
-## B. 密码输入
-
-```tsx
-<TextInput
-  value={pwd}
-  onChangeText={setPwd}
-  secureTextEntry
-  autoCapitalize="none"
-  autoCorrect={false}
-  textContentType="password"
-  placeholder="密码"
-/>
-```
-
-## C. 搜索框（按键盘搜索触发）
-
-```tsx
-<TextInput
-  value={q}
-  onChangeText={setQ}
-  returnKeyType="search"
-  onSubmitEditing={() => doSearch(q)}
-  placeholder="搜索"
-/>
-```
-
-## D. 验证码（限制长度 + 数字键盘）
-
-```tsx
-<TextInput
-  value={code}
-  onChangeText={(t) => setCode(t.replace(/\D/g, "").slice(0, 6))}
-  keyboardType="number-pad"
-  maxLength={6}
-  textContentType="oneTimeCode"
-  placeholder="6位验证码"
-/>
-```
-
-## E. 多行简介（顶部对齐）
-
-```tsx
-<TextInput
-  value={bio}
-  onChangeText={setBio}
-  multiline
-  numberOfLines={4}
-  textAlignVertical="top"
-  placeholder="自我介绍"
+<Image
+  source={{ uri: "https://xxx.com/a.png" }}
+  style={{ width: 100, height: 100 }}
 />
 ```
 
 ---
 
-# 6) 你必须知道的“坑”和最佳实践（非常关键）
+## 4️⃣ ImageBackground
 
-## ✅ 1. 避免 setState 里做复杂格式化导致卡顿
+> 带背景图的容器
 
-输入每个字符都触发渲染。复杂正则/计算要轻量，必要时 debounce。
-
-## ✅ 2. Android 输入法组合态问题（中文拼音）
-
-有些“强行过滤字符”的逻辑会影响中文输入（例如你每次 replace 会打断组合输入）。
-
-* 纯数字输入一般没事
-* 复杂过滤建议在 **提交/失焦** 再严格校验
-
-## ✅ 3. 键盘遮挡（登录页常见）
-
-配合：
-
-* `KeyboardAvoidingView`
-* 或第三方：`react-native-keyboard-aware-scroll-view`
-
-## ✅ 4. 表单推荐用库（更省命）
-
-* `react-hook-form`（RN 也很好用）
-* `formik`（也能用但偏重）
-  配合 `Controller` 管 TextInput
+```tsx
+<ImageBackground source={...}>
+  <Text>内容</Text>
+</ImageBackground>
+```
 
 ---
 
-# 7) 你想要我按“项目级别”给你一套输入框组件吗？
+# 二、交互组件（用户操作相关）
 
-如果你正在写项目，真正落地一般会封装一个 `AppTextInput`，包含：
+## 5️⃣ Pressable（⭐ 推荐）
 
-* label、错误提示、清除按钮、密码显示/隐藏、边框聚焦态
-* 统一字体/间距/颜色
-* 支持 `react-hook-form`
+> 新一代点击组件，替代 Touchable 系列
 
-你回我一句：
-**“我要封装输入框组件（带错误提示/密码眼睛/清空按钮）”**
-我就给你一套可直接用的 RN 组件代码（TS 版）。
-![](./img/a1-1.png)
+**优点**
+
+- 状态感知（pressed / hovered / focused）
+- 官方推荐
+
+```tsx
+<Pressable onPress={() => {}}>
+  {({ pressed }) => <Text style={{ opacity: pressed ? 0.5 : 1 }}>点击</Text>}
+</Pressable>
+```
+
+---
+
+## 6️⃣ Touchable 系列（旧，但仍常见）
+
+| 组件                     | 说明             |
+| ------------------------ | ---------------- |
+| TouchableOpacity         | 改变透明度       |
+| TouchableHighlight       | 高亮背景         |
+| TouchableWithoutFeedback | 无视觉反馈       |
+| TouchableNativeFeedback  | Android 原生波纹 |
+
+---
+
+## 7️⃣ Button
+
+> 简单按钮（不建议用于复杂 UI）
+
+**缺点**
+
+- 样式不可控
+
+```tsx
+<Button title="提交" onPress={() => {}} />
+```
+
+---
+
+# 三、表单 & 输入组件
+
+## 8️⃣ TextInput
+
+> 文本输入框
+
+**重要属性**
+
+- `value`
+- `onChangeText`
+- `placeholder`
+- `secureTextEntry`
+- `keyboardType`
+
+```tsx
+<TextInput value={text} onChangeText={setText} placeholder="请输入" />
+```
+
+---
+
+## 9️⃣ Switch
+
+> 开关组件
+
+```tsx
+<Switch value={enabled} onValueChange={setEnabled} />
+```
+
+---
+
+# 四、列表 & 数据展示（非常重要）
+
+## 🔟 ScrollView
+
+> 可滚动容器（⚠️ 不适合长列表）
+
+```tsx
+<ScrollView>
+  {items.map(...)}
+</ScrollView>
+```
+
+---
+
+## 1️⃣1️⃣ FlatList（⭐ 高频）
+
+> 高性能列表组件
+
+**优势**
+
+- 虚拟化
+- 适合大数据
+
+```tsx
+<FlatList
+  data={data}
+  renderItem={({ item }) => <Text>{item}</Text>}
+  keyExtractor={(item) => item.id}
+/>
+```
+
+---
+
+## 1️⃣2️⃣ SectionList
+
+> 分组列表（通讯录、分类列表）
+
+```tsx
+<SectionList sections={[{ title: "A", data: ["Apple"] }]} />
+```
+
+---
+
+# 五、布局 & 安全区域
+
+## 1️⃣3️⃣ SafeAreaView
+
+> 适配刘海屏 / 状态栏
+
+```tsx
+<SafeAreaView style={{ flex: 1 }} />
+```
+
+---
+
+## 1️⃣4️⃣ KeyboardAvoidingView
+
+> 键盘弹出不遮挡输入框
+
+```tsx
+<KeyboardAvoidingView behavior="padding" />
+```
+
+---
+
+# 六、反馈 & 状态提示
+
+## 1️⃣5️⃣ ActivityIndicator
+
+> 加载中
+
+```tsx
+<ActivityIndicator size="large" />
+```
+
+---
+
+## 1️⃣6️⃣ RefreshControl
+
+> 下拉刷新（配合 ScrollView / FlatList）
+
+```tsx
+<FlatList
+  refreshControl={<RefreshControl refreshing={loading} onRefresh={fetch} />}
+/>
+```
+
+---
+
+# 七、平台 & 系统能力
+
+## 1️⃣7️⃣ Modal
+
+> 模态弹窗
+
+```tsx
+<Modal visible={visible} transparent />
+```
+
+---
+
+## 1️⃣8️⃣ StatusBar
+
+> 控制状态栏样式
+
+```tsx
+<StatusBar barStyle="dark-content" />
+```
+
+---
+
+## 1️⃣9️⃣ Platform
+
+> 平台判断
+
+```ts
+Platform.OS === "ios";
+```
+
+---
+
+## 2️⃣0️⃣ Dimensions
+
+> 获取屏幕尺寸
+
+```ts
+Dimensions.get("window").width;
+```
+
+---
+
+# 八、动画 & 手势（进阶）
+
+## 2️⃣1️⃣ Animated
+
+> 动画系统（偏底层）
+
+```tsx
+const opacity = useRef(new Animated.Value(0)).current;
+```
+
+---
+
+## 2️⃣2️⃣ LayoutAnimation
+
+> 布局变化动画（简单好用）
+
+---
+
+# 九、无障碍 & 其他
+
+## 2️⃣3️⃣ Accessibility
+
+- `accessible`
+- `accessibilityLabel`
+
+---
+
+# 十、组件分类总结表（速查）
+
+| 分类 | 组件                 |
+| ---- | -------------------- |
+| 基础 | View, Text, Image    |
+| 交互 | Pressable, Button    |
+| 表单 | TextInput, Switch    |
+| 列表 | ScrollView, FlatList |
+| 布局 | SafeAreaView         |
+| 状态 | ActivityIndicator    |
+| 系统 | Modal, StatusBar     |
+| 动画 | Animated             |
+
+# 十一、学习建议（结合你当前阶段）
+
+你现在**非常适合这样学 RN 组件**：
+
+1. **先精通**
+
+   - View / Text / Pressable
+   - FlatList / TextInput
+
+2. **再做小项目**
+
+   - 登录页
+   - 列表页
+   - 表单页
+
+3. **再引入**
+
+   - 第三方组件库（React Native Paper / NativeBase）
+   - 手势（react-native-gesture-handler）
+
+---
+
+如果你愿意，下一步我可以帮你：
+
+- 按 **“Web → RN 对照表”** 给你讲
+- 给你 **RN 常用 UI 组件封装规范**
+- 或 **直接带你写一个完整 RN 页面**
+
+你可以直接说你想往哪一步走。
