@@ -316,14 +316,28 @@ const opacity = useRef(new Animated.Value(0)).current;
 
 | 分类 | 组件                 |
 | ---- | -------------------- |
-| 基础 | View, Text, Image    |
-| 交互 | Pressable, Button    |
-| 表单 | TextInput, Switch    |
-| 列表 | ScrollView, FlatList |
-| 布局 | SafeAreaView         |
+| 基础 | View, Text, Image ,ImageBackground   |
+| 交互 | Pressable, Button, TextInput, Switch    |
+| 列表 | ScrollView, FlatList, Sectionlist |
+| 布局 | SafeAreaView  , statusBar      |
 | 状态 | ActivityIndicator    |
-| 系统 | Modal, StatusBar     |
-| 动画 | Animated             |
+| 系统 | Modal, StatusBar ,RefreshControl    |
+
+
+2. 热门第三方 UI 组件库 (2026 推荐)
+如果需要更美观、现成的组件，建议使用以下流行的 UI 库： 
+Tamagui: 2026 年极受推崇，主打高性能和多端通用（Web/Native），支持高度优化的样式系统。
+gluestack-ui: 原 NativeBase 的继任者，提供无样式（Headless）组件，适配 Tailwind CSS (NativeWind)。
+React Native Paper: 基于 Google Material Design 设计规范的组件库，非常成熟且稳定。
+React Native Elements: 社区驱动的通用 UI 库，适合快速构建原型 (MVP)。
+Ant Design Mobile RN: 阿里出品，适合企业级应用，提供丰富的表单和数据展示组件。 
+
+导航： React Navigation (几乎是所有 RN 应用的标配)。
+动画： Lottie for React Native（加载 Json 动画）、React Native Reanimated（底层高性能动画库）。
+地图： React Native Maps。
+图标： React Native Vector Icons (集成 FontAwesome, Ionicons 等)。
+聊天界面： React Native Gifted Chat。
+选择器： react-native-picker-select。 
 
 # 十一、学习建议（结合你当前阶段）
 

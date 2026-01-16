@@ -3,8 +3,14 @@
     "text": "Home",
     "link": "/reactNative/",
     "activeMatch": "/reactNative/"
-  },{
-    "text": "component",
+  },
+  {
+    "text": "EXPO",
+    "link": "/expo/",
+    "activeMatch": "/expo/"
+  },
+  {
+    "text": "COMPONENT",
     "link": "/component/",
     "activeMatch": "/component/"
   },
@@ -12,10 +18,11 @@
     "text": "STYLE",
     "link": "/style/",
     "activeMatch": "/style/"
-  },{
-    "text": "Layout",
-    "link": "/layout/",
-    "activeMatch": "/layout/"
+  },
+  {
+    "text": "State",
+    "link": "/state/",
+    "activeMatch": "/state/"
   },
   {
     "text": "project",
