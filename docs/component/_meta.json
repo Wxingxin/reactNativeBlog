@@ -1,35 +1,35 @@
 [
-  { "type": "file", "name": "./view.md", "label": "View(展示)" },
-  { "type": "file", "name": "./text.md", "label": "Text(展示)" },
-  { "type": "file", "name": "./image.md", "label": "Image(展示)" },
+  { "type": "file", "name": "view", "label": "View(展示)" },
+  { "type": "file", "name": "text", "label": "Text(展示)" },
+  { "type": "file", "name": "image", "label": "Image(展示)" },
   {
     "type": "file",
-    "name": "./imageBackground.md",
-    "label": "imageBackground(展示)"
+    "name": "imageBackground",
+    "label": "ImageBackground(展示)"
   },
-  { "type": "file", "name": "./pressable.md", "label": "Pressable(交互)" },
-  { "type": "file", "name": "./button.md", "label": "Button(交互)" },
-  { "type": "file", "name": "./textInput.md", "label": "TextInput(交互)" },
-  { "type": "file", "name": "./switch.md", "label": "Switch(交互)" },
-  { "type": "file", "name": "./scrollView.md", "label": "ScrollView(列表)" },
-  { "type": "file", "name": "./flatList.md", "label": "FlatList(列表)" },
-  { "type": "file", "name": "./sectionList.md", "label": "SectionList(列表)" },
+  { "type": "file", "name": "pressable", "label": "Pressable(交互)" },
+  { "type": "file", "name": "button", "label": "Button(交互)" },
+  { "type": "file", "name": "textInput", "label": "TextInput(交互)" },
+  { "type": "file", "name": "switch", "label": "Switch(交互)" },
+  { "type": "file", "name": "scrollView", "label": "ScrollView(列表)" },
+  { "type": "file", "name": "flatList", "label": "FlatList(列表)" },
+  { "type": "file", "name": "sectionList", "label": "SectionList(列表)" },
   {
     "type": "file",
-    "name": "./safeAreaView.md",
+    "name": "safeAreaView",
     "label": "SafeAreaView(布局)"
   },    
   {
     "type": "file",
-    "name": "./activityIndicator.md",
+    "name": "activityIndicator",
     "label": "ActivityIndicator(状态)"
   },
-  { "type": "file", "name": "./alter.md", "label": "Alter(系统)" },
-  { "type": "file", "name": "./modal.md", "label": "Modal(系统)" },
-  { "type": "file", "name": "./statusBar.md", "label": "StatusBar(系统)" },
+  { "type": "file", "name": "alter", "label": "Alter(系统)" },
+  { "type": "file", "name": "modal", "label": "Modal(系统)" },
+  { "type": "file", "name": "statusBar", "label": "StatusBar(系统)" },
   {
     "type": "file",
-    "name": "./refreshControl.md",
+    "name": "refreshControl",
     "label": "RefreshControl(系统)"
   }
 ]
