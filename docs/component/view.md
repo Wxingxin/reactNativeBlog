@@ -369,3 +369,301 @@ const styles = StyleSheet.create({
 4. 做一套 **RN 布局速查表（PDF 风格）**
 
 你可以直接告诉我你想继续哪一个。
+
+
+下面按“RN `View` 组件的**内置属性（props）**”系统整理（不讲 `style` 相关内容）。我按**最常用与最容易踩坑**的维度分类，并给出典型用法与注意点。示例均为最小可复制片段。
+
+---
+
+## 1) 事件与触摸相关（非 `Pressable` 也能用）
+
+> `View` 本身可接收触摸事件，但更推荐用 `Pressable/Touchable*` 做可交互组件；`View` 用于容器时，这些属性主要用于“拦截/透传事件”和“事件协商”。
+
+### `pointerEvents`
+
+控制该 `View` 以及其子元素如何参与触摸命中测试。
+
+* `auto`：默认，自己和子元素都可响应
+* `none`：自己和子元素都不响应（全部穿透）
+* `box-none`：自己不响应，但子元素可响应
+* `box-only`：自己响应，但子元素不响应
+
+```jsx
+<View pointerEvents="box-none">
+  {/* 父容器不吃事件，子组件仍可点击 */}
+</View>
+```
+
+典型场景：
+
+* 浮层遮罩只想让“按钮能点”，但背景不要被拦截（用 `box-none`）
+* 全屏 loading 需要彻底阻断交互（用 `auto` + 遮罩；或 `pointerEvents="auto"`）
+
+---
+
+### `hitSlop`
+
+扩大可点击区域（不会改变布局尺寸），适合小图标、关闭按钮。
+
+```jsx
+<View
+  onStartShouldSetResponder={() => true}
+  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+/>
+```
+
+注意：`hitSlop` 对需要成为 responder 的组件更有意义；通常搭配 `Pressable` 更常见，但 `View` 也可用。
+
+---
+
+### Responder 系列（手势底层机制）
+
+这些是 RN 触摸系统底层 props。你需要“自定义拖拽/拦截滚动/在 View 上做复杂手势”时才会用。
+
+* `onStartShouldSetResponder`
+* `onMoveShouldSetResponder`
+* `onStartShouldSetResponderCapture`
+* `onMoveShouldSetResponderCapture`
+* `onResponderGrant`
+* `onResponderMove`
+* `onResponderRelease`
+* `onResponderTerminate`
+* `onResponderTerminationRequest`
+* `onResponderStart`
+* `onResponderEnd`
+* `onResponderReject`
+
+最小示例：让 `View` 自己吃到触摸并响应按下/抬起
+
+```jsx
+<View
+  onStartShouldSetResponder={() => true}
+  onResponderGrant={() => console.log("down")}
+  onResponderRelease={() => console.log("up")}
+/>
+```
+
+典型场景：
+
+* 自定义拖拽、画板、滑块
+* 需要阻断父级 ScrollView 手势
+* 与 `react-native-gesture-handler` 搭配前的原生 responder 理解
+
+---
+
+## 2) 无障碍 Accessibility（强烈建议掌握）
+
+### `accessible`
+
+把该 `View` 当作一个可访问性元素（会聚合其子元素语义）。
+
+```jsx
+<View accessible>
+  <Text>...</Text>
+</View>
+```
+
+### `accessibilityLabel`
+
+读屏会读的文本。
+
+```jsx
+<View accessible accessibilityLabel="用户信息卡片" />
+```
+
+### `accessibilityHint`
+
+补充说明“操作会发生什么”。
+
+```jsx
+<View
+  accessible
+  accessibilityLabel="提交"
+  accessibilityHint="双击提交表单"
+/>
+```
+
+### `accessibilityRole`
+
+语义角色（如 `button`, `header`, `image`, `link`, `summary` 等）。
+
+```jsx
+<View accessible accessibilityRole="button" />
+```
+
+### `accessibilityState`
+
+状态描述：`disabled`, `selected`, `checked`, `busy`, `expanded` 等。
+
+```jsx
+<View
+  accessible
+  accessibilityRole="button"
+  accessibilityState={{ disabled: true }}
+/>
+```
+
+### `accessibilityActions` + `onAccessibilityAction`
+
+为读屏用户提供自定义动作。
+
+```jsx
+<View
+  accessible
+  accessibilityActions={[{ name: "activate" }, { name: "longpress" }]}
+  onAccessibilityAction={(e) => {
+    console.log(e.nativeEvent.actionName);
+  }}
+/>
+```
+
+### `importantForAccessibility`
+
+控制该元素（及其子元素）是否对无障碍树可见：
+
+* `auto` / `yes` / `no` / `no-hide-descendants`
+
+---
+
+## 3) 布局回调与测量（非 style）
+
+### `onLayout`
+
+布局完成后回调，拿到该 View 的尺寸与位置（相对父容器）。
+
+```jsx
+<View
+  onLayout={(e) => {
+    const { x, y, width, height } = e.nativeEvent.layout;
+    console.log(width, height);
+  }}
+/>
+```
+
+典型场景：
+
+* 动态计算高度后做动画
+* 需要把某个元素定位到屏幕某处（配合 measure）
+
+---
+
+### `nativeID`
+
+给原生侧标识用（少数场景，比如原生模块、测试定位等）。
+
+```jsx
+<View nativeID="profile-card" />
+```
+
+---
+
+## 4) 渲染与优化（提升性能时常用）
+
+### `collapsable`（Android 更常见）
+
+RN 为了优化，会把“只作为布局容器、没有背景/边框等可见效果”的 `View` 折叠掉。某些情况下你需要它**一定存在于原生视图树**（比如 `measure`、原生侧要找它），就要关掉折叠：
+
+```jsx
+<View collapsable={false} />
+```
+
+---
+
+### `needsOffscreenAlphaCompositing`
+
+当子元素需要透明度合成时，开启可避免某些渲染问题（代价是性能）。
+
+```jsx
+<View needsOffscreenAlphaCompositing />
+```
+
+---
+
+### `renderToHardwareTextureAndroid`
+
+将该 View 渲染到 GPU 纹理（Android），有时能改善动画/透明度等表现，但也可能增加内存。
+
+```jsx
+<View renderToHardwareTextureAndroid />
+```
+
+---
+
+### `shouldRasterizeIOS`
+
+iOS 栅格化：把矢量内容缓存成位图，某些复杂内容/频繁重绘场景可提升性能，但缩放可能模糊。
+
+```jsx
+<View shouldRasterizeIOS />
+```
+
+---
+
+## 5) 变换与动画相关（非 style，但与动画体系关联）
+
+`View` 本身不会提供“动画属性”，动画通常通过：
+
+* `Animated.View`（旧体系，仍常用）
+* Reanimated 的 `Animated.View`（更强，尤其手势联动）
+* LayoutAnimation（对布局变更动画）
+
+你在 `View` 上常用的是事件/布局回调、以及“要不要参与命中测试/无障碍”。
+
+---
+
+## 6) 平台差异与特殊属性（少见但要认识）
+
+### `removeClippedSubviews`
+
+对长列表优化：裁剪屏幕外子视图（常用于 `ScrollView/FlatList` 容器层），能省内存，可能导致某些绝对定位/阴影问题。
+
+```jsx
+<View removeClippedSubviews />
+```
+
+---
+
+### `focusable`（TV/键盘导航场景更常见）
+
+让 View 可被聚焦。
+
+```jsx
+<View focusable />
+```
+
+---
+
+### `tabIndex`（新架构/部分平台场景）
+
+部分场景用于键盘导航顺序（并非所有 RN 版本/平台一致可用）。
+
+---
+
+## 7) 一份“按你在项目中最常用”的速查清单
+
+高频必会：
+
+* `pointerEvents`
+* `onLayout`
+* `accessible` / `accessibilityLabel` / `accessibilityRole` / `accessibilityState`
+* responder 系列（至少知道何时该用）
+
+性能与原生联动常见：
+
+* `collapsable={false}`
+* `removeClippedSubviews`
+* `renderToHardwareTextureAndroid`
+* `shouldRasterizeIOS`
+
+---
+
+## 实战建议（不讲样式，但讲用法策略）
+
+1. **可点击组件优先用 `Pressable`**，`View` 更适合容器；除非你在做底层手势拦截/自定义 responder。
+2. **做浮层/蒙层**一定掌握 `pointerEvents` 的四个值。
+3. **需要测量尺寸**优先 `onLayout`，确实需要绝对坐标再用 `measure`（通常在 ref 上调用，不是 View prop）。
+4. **无障碍**不要只写 Text；交互容器要给 `accessibilityRole` 与 `accessibilityLabel`。
+
+---
+
+如果你愿意，我可以再给你一份“`View` + `Pressable` + `pointerEvents` 做弹窗遮罩与点击穿透”的经典组合代码，以及 responder 在“拖拽卡片”里的最小实现示例（都不涉及 style 讲解）。

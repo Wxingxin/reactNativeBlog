@@ -1,6 +1,4 @@
-## 1. 布局属性 (Flexbox Layout)
-
-这是 React Native 最核心的布局方式。
+## 布局
 
 | 属性                         | 说明                         | 常见值                                                                              |
 | ---------------------------- | ---------------------------- | ----------------------------------------------------------------------------------- |
@@ -14,9 +12,7 @@
 | **flexGrow / flexShrink**    | 放大/缩小比例                | 数字                                                                                |
 | **flexBasis**                | 在分配多余空间之前的默认大小 | 数字, 百分比                                                                        |
 
----
-
-## 2. 尺寸与间距 (Dimension & Spacing)
+## 大小
 
 控制组件的大小以及内外边距。
 
@@ -29,9 +25,7 @@
 - `padding`, `paddingTop`, `paddingBottom`, `paddingLeft`, `paddingRight`
 - `paddingHorizontal`, `paddingVertical`
 
----
-
-## 3. 定位 (Positioning)
+## 定位
 
 用于特殊的布局需求。
 
@@ -39,24 +33,8 @@
 - **层级**: `zIndex` (数字)。
 - **偏移**: `top`, `bottom`, `left`, `right`, `inset` (同时设置四个方向)。
 
----
 
-## 4. 视图与背景 (View Styles)
-
-主要用于 `View` 组件的视觉呈现。
-
-- **背景**: `backgroundColor`, `opacity` (透明度 0-1)。
-- **边距圆角**: `borderRadius`, `borderTopLeftRadius`, `borderTopRightRadius` 等。
-- **边框**:
-- `borderWidth`, `borderTopWidth` 等。
-- `borderColor`, `borderTopColor` 等。
-- `borderStyle`: `solid`, `dotted`, `dashed`。
-
-- **溢出**: `overflow` (`visible`, `hidden`, `scroll`)。
-
----
-
-## 5. 文本样式 (Text Styles)
+## 文本 颜色 & 背景
 
 专门用于 `Text` 组件的属性。
 
@@ -67,9 +45,8 @@
 - **间距**: `lineHeight`, `letterSpacing`。
 - **阴影**: `textShadowColor`, `textShadowOffset`, `textShadowRadius`。
 
----
 
-## 6. 图片样式 (Image Styles)
+## 图片样式(Image 专用)
 
 专门用于 `Image` 组件。
 
@@ -77,37 +54,7 @@
 - **着色**: `tintColor` (将图片中的非透明部分染成特定颜色)。
 - **其他**: `overlayColor` (Android 专用)。
 
----
 
-## 7. 阴影与变换 (Shadow & Transform)
+## 动画
 
-### 阴影 (Shadow)
-
-> **注意**：React Native 的阴影处理在 iOS 和 Android 上是不同的。
-
-- **iOS**:
-- `shadowColor`, `shadowOffset` ({width, height}), `shadowOpacity`, `shadowRadius`。
-
-- **Android**:
-- **elevation**: 唯一属性，通过数字控制高度产生的阴影。
-
-### 变换 (Transform)
-
-用于旋转、缩放、平移。
-
-- **transform**: 接受一个数组，例如：`[{ rotate: '45deg' }, { scale: 2 }, { translateX: 10 }]`。
-
----
-
-## 8. 其他常用
-
-- **backfaceVisibility**: `visible`, `hidden` (翻转动画时是否显示背面)。
-- **display**: `flex`, `none` (隐藏组件建议用 `none`)。
-
----
-
-### 💡 提示：
-
-在 React Native 中，所有的数值默认单位都是 **dp**（与设备无关的像素），不需要写 `px`。百分比需要写成字符串形式，例如 `width: '50%'`。
-
-**你想深入了解其中的某一部分（比如如何实现复杂的阴影效果，或者 Flexbox 的高级用法）吗？**
+##
