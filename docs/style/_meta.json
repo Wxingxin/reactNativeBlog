@@ -1,0 +1,17 @@
+[
+  { "type": "file", "name": "index", "label": "index" },
+  { "type": "file", "name": "all", "label": "one" },
+  { "type": "file", "name": "three", "label": "two" },
+  { "type": "file", "name": "flex", "label": "flex" },
+  { "type": "file", "name": "box", "label": "box" },
+  { "type": "file", "name": "border", "label": "border" },
+  { "type": "file", "name": "positionZindex", "label": "positionZindex" },
+  { "type": "file", "name": "colorBackground", "label": "colorBackground" },
+  { "type": "file", "name": "text", "label": "text" },
+  { "type": "file", "name": "image", "label": "image" },
+  { "type": "file", "name": "transform", "label": "transform" },
+  { "type": "file", "name": "overflow", "label": "overflow" },
+  { "type": "dir", "name": "animation", "label": "animation" },
+  { "type": "dir", "name": "nativewind", "label": "nativewind" },
+  { "type": "dir", "name": "ui", "label": "ui" }
+]

@@ -1,0 +1,9 @@
+[
+  { "type": "file", "name": "index", "label": "index" },
+  { "type": "file", "name": "checkbase", "label": "checkbase" },
+  { "type": "file", "name": "checkbox", "label": "checkbox" },
+  { "type": "file", "name": "radio", "label": "radio" },
+  { "type": "file", "name": "textarea", "label": "textarea" },
+  { "type": "file", "name": "select", "label": "select" },
+  { "type": "file", "name": "file", "label": "file" }
+]

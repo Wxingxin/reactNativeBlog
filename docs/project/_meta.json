@@ -2,5 +2,9 @@
   { "type": "file", "name": "index", "label": "index" },
   { "type": "file", "name": "one", "label": "one" },
   { "type": "file", "name": "card", "label": "card" },
-  { "type": "file", "name": "check", "label": "check" }
+  {
+    "type": "dir",
+    "name": "component",
+    "label": "component"
+  }
 ]

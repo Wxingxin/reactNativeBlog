@@ -16,6 +16,11 @@
     },
     {
         "type": "dir",
+        "name": "axios",
+        "label": "axios"
+    },
+    {
+        "type": "dir",
         "name": "zustand",
         "label": "zustand"
     },

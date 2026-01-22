@@ -204,7 +204,7 @@
 - Zustand
 - Expo Image
 - Expo Image Picker
-- Expo Notifications
+- Expo Notifications 一个提供 API 的库，用于获取推送通知令牌，以及显示、安排、接收和响应通知。
 - React Native Reanimated
 - React Hook Form + Zod
 ```
