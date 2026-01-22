@@ -1,32 +1,37 @@
 [
-    {
-        "type": "file",
-        "name": "form",
-        "label": "form"
-    },
-    {
-        "type": "file",
-        "name": "formAge",
-        "label": "formAge"
-    },
-    {
-        "type": "file",
-        "name": "index",
-        "label": "index"
-    },
-    {
-        "type": "dir",
-        "name": "axios",
-        "label": "axios"
-    },
-    {
-        "type": "dir",
-        "name": "zustand",
-        "label": "zustand"
-    },
-    {
-        "type": "dir",
-        "name": "tanStack",
-        "label": "tanStack"
-    }
+  {
+    "type": "file",
+    "name": "form",
+    "label": "form"
+  },
+  {
+    "type": "file",
+    "name": "formAge",
+    "label": "formAge"
+  },
+  {
+    "type": "file",
+    "name": "index",
+    "label": "index"
+  },
+  {
+    "type": "dir",
+    "name": "axios",
+    "label": "axios"
+  },
+  {
+    "type": "dir",
+    "name": "zustand",
+    "label": "zustand"
+  },
+  {
+    "type": "dir",
+    "name": "tanStack",
+    "label": "tanStack"
+  },
+  {
+    "type": "dir",
+    "name": "ts",
+    "label": "ts"
+  }
 ]
