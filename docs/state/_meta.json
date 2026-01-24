@@ -17,21 +17,43 @@
   {
     "type": "dir",
     "name": "axios",
-    "label": "axios"
+    "label": "axios",
+    "collapse": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "reactHookForm",
+    "label": "reactHookForm",
+    "collapse": true,
+    "collapsed": true
   },
   {
     "type": "dir",
     "name": "zustand",
-    "label": "zustand"
+    "label": "zustand",
+    "collapse": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "reduxToolKit",
+    "label": "reduxToolKit",
+    "collapse": true,
+    "collapsed": true
   },
   {
     "type": "dir",
     "name": "tanStack",
-    "label": "tanStack"
+    "label": "tanStack",
+    "collapse": true,
+    "collapsed": true
   },
   {
     "type": "dir",
     "name": "ts",
-    "label": "ts"
+    "label": "ts",
+    "collapse": true,
+    "collapsed": true
   }
 ]

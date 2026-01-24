@@ -276,3 +276,221 @@ const useStore = create(
 * 把你现有 Context 改成 Zustand 的完整步骤
 
 你可以直接告诉我你想用在哪个场景。
+---------------------------------------
+这个问题问得**非常对路**。
+学 Zustand，**第一步不是 API，而是项目结构**。我直接按**真实 React 项目**给你一套可长期用的做法，不绕弯子。
+
+---
+
+## 一、最推荐的目录结构（通用、可扩展）
+
+在 React 项目中，**单独放一个 store 目录**：
+
+```
+src/
+├── store/
+│   ├── index.ts          # 统一导出（可选）
+│   ├── user.store.ts     # 用户相关状态
+│   ├── auth.store.ts     # 登录 / 权限
+│   ├── cart.store.ts     # 购物车
+│   └── ui.store.ts       # UI 状态（弹窗、主题等）
+├── pages/
+├── components/
+└── App.tsx
+```
+
+👉 **核心原则一句话**：
+
+> **一个 store 文件 = 一个“业务域”**
+
+---
+
+## 二、最基础的 store 文件该放什么？
+
+以 `user.store.ts` 为例（最经典）：
+
+```ts
+import { create } from 'zustand'
+
+type User = {
+  id: string
+  name: string
+}
+
+type UserStore = {
+  user: User | null
+  setUser: (user: User) => void
+  clearUser: () => void
+}
+
+export const useUserStore = create<UserStore>((set) => ({
+  user: null,
+
+  setUser: (user) => set({ user }),
+
+  clearUser: () => set({ user: null }),
+}))
+```
+
+### 你要记住的 3 个组成部分
+
+每个 store 文件**一定**包含：
+
+1. **状态（state）**
+
+   ```ts
+   user: null
+   ```
+
+2. **修改状态的方法（actions）**
+
+   ```ts
+   setUser()
+   clearUser()
+   ```
+
+3. **useXxxStore Hook**
+
+   ```ts
+   export const useUserStore = create(...)
+   ```
+
+---
+
+## 三、在组件里怎么用？
+
+```tsx
+import { useUserStore } from '@/store/user.store'
+
+function Profile() {
+  const user = useUserStore((state) => state.user)
+  const clearUser = useUserStore((state) => state.clearUser)
+
+  return (
+    <>
+      <div>{user?.name}</div>
+      <button onClick={clearUser}>退出</button>
+    </>
+  )
+}
+```
+
+✅ **不需要 Provider**
+✅ **不用 Context**
+✅ **哪里用，哪里 import**
+
+这就是 Zustand 爽的地方。
+
+---
+
+## 四、store/index.ts 要不要？
+
+如果 store 多了，**建议有**：
+
+```ts
+// src/store/index.ts
+export * from './user.store'
+export * from './auth.store'
+export * from './cart.store'
+```
+
+然后组件里：
+
+```ts
+import { useUserStore } from '@/store'
+```
+
+👉 不是必须，但**工程化必备**
+
+---
+
+## 五、常见 3 种 store 分类（很重要）
+
+### ① 业务数据 store（最常见）
+
+```
+user.store.ts
+order.store.ts
+product.store.ts
+```
+
+**放什么**：接口数据、业务状态
+
+---
+
+### ② UI 状态 store（新手容易忽略）
+
+```ts
+type UIStore = {
+  theme: 'light' | 'dark'
+  isLoginModalOpen: boolean
+  toggleTheme: () => void
+}
+```
+
+**放什么**：
+
+* 弹窗开关
+* 主题
+* loading 状态
+
+❌ 不要用 useState 到处写
+
+---
+
+### ③ 临时/跨页面共享状态
+
+比如搜索条件、分页：
+
+```ts
+type SearchStore = {
+  keyword: string
+  setKeyword: (k: string) => void
+}
+```
+
+---
+
+## 六、什么时候拆 store？什么时候合？
+
+**拆：**
+
+* user + auth 职责不同
+* cart 状态复杂
+* UI 状态和业务状态分离
+
+**合（新手常犯错）**：
+
+* 把所有东西塞进一个 `useAppStore`
+  ❌ 后期必炸
+
+---
+
+## 七、和 Redux / Context 的关键差别（帮你建立正确心智）
+
+| 对比点         | Zustand |
+| ----------- | ------- |
+| Provider    | ❌ 不需要   |
+| Boilerplate | 极少      |
+| 拆 store     | 非常自然    |
+| 学习成本        | 低       |
+| 中大型项目       | 完全够用    |
+
+---
+
+## 八、你下一步**应该学什么（重要）**
+
+按这个顺序学，效率最高：
+
+1️⃣ **selector（state => state.xxx）为什么能减少重渲染**
+2️⃣ **store 拆分 vs 合并策略**
+3️⃣ **异步 action（接口请求）**
+4️⃣ **persist / devtools 中间件**
+
+如果你愿意，我可以：
+
+* 给你 **一套真实项目级 zustand 结构**
+* 或直接用你现在的 React 项目 **帮你设计 store 划分**
+* 或对比 **Zustand vs Redux Toolkit 到“何时该用谁”**
+
+你下一步想往哪走？

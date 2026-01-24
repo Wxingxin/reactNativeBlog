@@ -21,14 +21,14 @@ outline: false
 * **内边距**
 
   * `padding`
-  * `paddingTop / Bottom / Left / Right`
-  * `paddingHorizontal / Vertical`
+  * `paddingTop / paddingBottom / paddingLeft / paddingRight`
+  * `paddingHorizontal / paddingVertical`
 
 * **外边距**
 
   * `margin`
-  * `marginTop / Bottom / Left / Right`
-  * `marginHorizontal / Vertical`
+  * `marginTop / marginBottom / marginLeft / marginRight`
+  * `marginHorizontal / marginVertical`
 
 ---
 
