@@ -321,3 +321,384 @@ const AppText = ({ style, ...props }) => (
 4️⃣ **Android / iOS 字体差异完整对照**
 
 你选一个，我直接给你项目级方案。
+------------------------------------
+下面给你一份**React Native 中 `Text` 组件「非 style 类属性」的系统级整理**，
+**不包含任何 `style` / `className` / `nativewind` / 字体样式**，
+按**真实项目使用频率 + 功能分类**讲清 **作用 + 使用方式 + 注意点**。
+
+---
+
+# 一、文本内容 & 结构控制
+
+---
+
+## 1️⃣ `children`
+
+```tsx
+<Text>你好 RN</Text>
+```
+
+* 文本内容或嵌套 `<Text>`
+* **只有 Text 可以直接嵌套 Text**
+
+📌 场景：
+
+* 富文本
+* 行内高亮
+* 链接
+
+---
+
+## 2️⃣ `numberOfLines`（🔥）
+
+**限制显示行数，超出省略**
+
+```tsx
+<Text numberOfLines={2}>
+  很长很长的一段文字……
+</Text>
+```
+
+📌 行为：
+
+* 超出自动截断
+* 默认尾部省略号
+
+---
+
+## 3️⃣ `ellipsizeMode`
+
+```tsx
+<Text numberOfLines={1} ellipsizeMode="tail" />
+```
+
+| 值        | 说明       |
+| -------- | -------- |
+| `tail`   | 尾部省略（默认） |
+| `head`   | 头部省略     |
+| `middle` | 中间省略     |
+| `clip`   | 直接裁剪     |
+
+---
+
+## 4️⃣ `selectable`
+
+```tsx
+<Text selectable>
+  可以复制的文本
+</Text>
+```
+
+📌 常见场景：
+
+* 订单号
+* 链接
+* 错误信息
+
+---
+
+## 5️⃣ `allowFontScaling`
+
+```tsx
+<Text allowFontScaling={false} />
+```
+
+* 是否跟随系统字体缩放
+* 默认 `true`
+
+📌 常用于：
+
+* Logo
+* 数字
+* 表格
+
+---
+
+# 二、交互 & 点击行为
+
+> Text **可以直接点击**（不像 View）
+
+---
+
+## 6️⃣ `onPress`（🔥）
+
+```tsx
+<Text onPress={() => console.log('click')} />
+```
+
+📌 使用场景：
+
+* 链接
+* “查看更多”
+* 行内按钮
+
+⚠️ 注意：
+
+* 不支持 ripple
+* 无 press 状态（需自己控制）
+
+---
+
+## 7️⃣ `onLongPress`
+
+```tsx
+<Text onLongPress={() => console.log('long')} />
+```
+
+📌 场景：
+
+* 复制
+* 弹菜单
+
+---
+
+## 8️⃣ `pressRetentionOffset`
+
+```tsx
+<Text pressRetentionOffset={{ top: 20, bottom: 20 }} />
+```
+
+* 手指偏移仍算点击
+* 优化小文本可点性
+
+---
+
+## 9️⃣ `suppressHighlighting`（iOS）
+
+```tsx
+<Text suppressHighlighting />
+```
+
+* 点击时不高亮
+* 默认点击会变灰
+
+---
+
+# 三、布局 & 测量
+
+---
+
+## 🔟 `onLayout`（🔥）
+
+```tsx
+<Text
+  onLayout={(e) => {
+    const { width, height } = e.nativeEvent.layout;
+  }}
+/>
+```
+
+📌 场景：
+
+* 动态高度文本
+* 自适应动画
+* tooltip 位置计算
+
+---
+
+# 四、可访问性（Accessibility）
+
+---
+
+## 11️⃣ `accessible`
+
+```tsx
+<Text accessible />
+```
+
+* 是否作为独立可访问元素
+
+---
+
+## 12️⃣ `accessibilityLabel`
+
+```tsx
+<Text accessibilityLabel="用户名" />
+```
+
+---
+
+## 13️⃣ `accessibilityHint`
+
+```tsx
+<Text accessibilityHint="双击复制内容" />
+```
+
+---
+
+## 14️⃣ `accessibilityRole`
+
+```tsx
+<Text accessibilityRole="link" />
+```
+
+常见：
+
+* `text`
+* `link`
+* `header`
+
+---
+
+## 15️⃣ `accessibilityState`
+
+```tsx
+<Text accessibilityState={{ selected: true }} />
+```
+
+---
+
+# 五、系统 & 平台相关
+
+---
+
+## 16️⃣ `adjustsFontSizeToFit`（iOS）
+
+```tsx
+<Text adjustsFontSizeToFit numberOfLines={1} />
+```
+
+* 自动缩小字体以适应容器
+* ⚠️ 必须配合 `numberOfLines`
+
+---
+
+## 17️⃣ `minimumFontScale`（iOS）
+
+```tsx
+<Text minimumFontScale={0.8} />
+```
+
+* 字体最小缩放比例
+
+---
+
+## 18️⃣ `textBreakStrategy`（Android）
+
+```tsx
+<Text textBreakStrategy="highQuality" />
+```
+
+| 值             | 说明   |
+| ------------- | ---- |
+| `simple`      | 性能优先 |
+| `balanced`    | 默认   |
+| `highQuality` | 排版最佳 |
+
+---
+
+# 六、测试 & 标识
+
+---
+
+## 19️⃣ `testID`（🔥）
+
+```tsx
+<Text testID="title-text" />
+```
+
+📌 用于：
+
+* 自动化测试
+* E2E（Detox）
+
+---
+
+## 20️⃣ `nativeID`
+
+```tsx
+<Text nativeID="title" />
+```
+
+* 原生层级引用
+
+---
+
+# 七、事件系统（较少用）
+
+---
+
+## 21️⃣ `onPressIn / onPressOut`
+
+```tsx
+<Text
+  onPressIn={() => {}}
+  onPressOut={() => {}}
+/>
+```
+
+📌 自定义点击反馈
+
+---
+
+## 22️⃣ `onResponderGrant`
+
+```tsx
+<Text onResponderGrant={() => {}} />
+```
+
+📌 底层事件，极少用
+
+---
+
+# 八、Text 独有的重要特性（你必须记住）
+
+### ✅ Text 可以：
+
+* 直接点击
+* 行内嵌套
+* 自动换行
+* 自适应高度
+
+### ❌ Text 不适合：
+
+* 大面积点击（用 Pressable）
+* 复杂交互
+* 手势动画
+
+---
+
+# 九、真实项目中最常用的组合
+
+```tsx
+<Text
+  numberOfLines={1}
+  ellipsizeMode="tail"
+  selectable
+  onPress={goDetail}
+  testID="list-title"
+>
+  {title}
+</Text>
+```
+
+---
+
+# 十、你现在这个阶段的建议
+
+你已经在 **RN + Expo Router** 阶段了，这些属性中：
+
+**必须熟**
+
+* `numberOfLines`
+* `ellipsizeMode`
+* `onPress`
+* `selectable`
+* `onLayout`
+
+**了解即可**
+
+* `textBreakStrategy`
+* `adjustsFontSizeToFit`
+* `minimumFontScale`
+
+---
+
+如果你愿意，我可以继续帮你：
+
+* 🔥 **Text vs Pressable vs Button 的使用边界**
+* 🔥 **RN 中“富文本”完整实现方案**
+* 🔥 **Text 在 FlatList 中的性能优化**
+* 🔥 **RN 所有基础组件非-style 属性全集**
+
+你选一个，我继续按“项目级标准”给你整理。

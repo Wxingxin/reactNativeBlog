@@ -24,6 +24,11 @@
     "link": "/state/",
     "activeMatch": "/state/"
   },
+   {
+    "text": "STORAGE",
+    "link": "/storage/",
+    "activeMatch": "/storage/"
+  },
   {
     "text": "project",
     "link": "/project/",
