@@ -9,6 +9,7 @@
   },
   { "type": "file", "name": "pressable", "label": "Pressable(交互)" },
   { "type": "file", "name": "button", "label": "Button(交互)" },
+  { "type": "file", "name": "touchableOpacity", "label": "TouchableOpacity(交互)" },
   { "type": "file", "name": "textInput", "label": "TextInput(交互)" },
   { "type": "file", "name": "switch", "label": "Switch(交互)" },
   { "type": "file", "name": "scrollView", "label": "ScrollView(列表)" },
