@@ -16,6 +16,20 @@
   },
   {
     "type": "dir",
+    "name": "props",
+    "label": "props",
+    "collapse": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "ref",
+    "label": "ref",
+    "collapse": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
     "name": "axios",
     "label": "axios",
     "collapse": true,
